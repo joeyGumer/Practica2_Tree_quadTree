@@ -1,0 +1,11 @@
+-The name of all the functions i make begins with mayus.
+
+-On the other side, the name of all the variables i declare begins in minus
+
+-The classes and the structs usually begins with mayus, except when i put a c before, to declare i'm refering to the class
+ . just in case i need to make the difference, as i do in cDlist.ç
+
+-When i do a cicle, i prefer to do a while, not a for, because as i read the cycle content i know wich thing changes on each cycle
+
+-In a function, i separate in blocks the instruccions that have a similirar utility, for example, i put the variable declarations together,
+and the i do another code blocks separated for the diferent asignations and calculus,... 
