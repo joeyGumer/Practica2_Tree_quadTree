@@ -20,6 +20,7 @@ public:
 		father = NULL;
 	}
 	
+	//I got this idea from your repository because i wanted to have an easy identifier for each tNode, i mean, to ideantify each tNode by their content. 
 	tNode<TYPE>* FindRecursive(const TYPE& node)
 	{
 		if (node == data)
@@ -41,6 +42,9 @@ public:
 		return ret;
 	}
 	
+	/*
+	Recursive order functions
+	*/
 	void PreOrderRecursive(cDlist<tNode<TYPE>*>* list)
 	{
 		list->Add(this);
@@ -105,7 +109,9 @@ public:
 
 	}
 	
-	//Add
+	/*
+	Add
+	*/
 	tNode<TYPE>* Add(const TYPE& newData)
 	{
 		tNode<TYPE>* newNode = new tNode<TYPE>(newData);
@@ -127,7 +133,9 @@ public:
 		return newNode;
 	}
 	
-	//Function that returns all the nodes (recursive)
+	/*
+	Recursive order functions
+	*/
 	void PreOrderRecursive(cDlist<tNode<TYPE>*>* list) const
 	{
 		rootNode->PreOrderRecursive(list);
@@ -143,7 +151,9 @@ public:
 		rootNode->InOrderRecursive(list);
 	}
 	
-	//Function that returns all the nodes (iterative)
+	/*
+	Iterative order functions
+	*/
 	void PreOrderIterative(cDlist<tNode<TYPE>*>* list) const
 	{
 		cStack<tNode<TYPE>*> stack;
@@ -244,10 +254,44 @@ public:
 		}
 	}
 
+	/*
+	Clear
+	*/
+	void Clear(const TYPE& node)
+	{
+		tNode<TYPE>* delNode = rootNode->FindRecursive(node);
+		Node<tNode<TYPE>*>* tmp;
+		Node<tNode<TYPE>*>* tmp2;
+		unsigned int counter = 0;
+
+		if (delNode == NULL && rootNode != NULL)
+		{
+			delNode = rootNode;
+		}
+
+		if (delNode != NULL)
+		{
+			tmp = delNode->sons.start;
+
+			if (tmp != NULL)
+			{
+				while (counter < delNode->sons.GetCapacity())
+				{
+					tmp2 = tmp;
+					Clear(tmp->value->data);
+					tmp = tmp2->next;
+					
+					counter++;
+				}
+			}
+			tmp = delNode->father->sons.start;
+			delNode->father->sons.Delete(tmp);
+		}
+		if (delNode == rootNode)
+		{
+			rootNode =  NULL;
+		}
+	}
 };
-
-
-
-
 
 #endif _TREE_H_<

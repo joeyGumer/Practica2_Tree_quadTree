@@ -207,9 +207,39 @@ namespace UnitTest
 		Assert::AreEqual((char)list[3]->data, 'D');
 		Assert::AreEqual((char)list[4]->data, 'E');
 		Assert::AreEqual((char)list[5]->data, 'F');
-		
+		Assert::AreEqual((char)list[6]->data, 'G');
+		Assert::AreEqual((char)list[7]->data, 'I');
+		Assert::AreEqual((char)list[8]->data, 'H');
 		}
 
+		TEST_METHOD(Clear)
+		{
+			Tree<char> tree('F');
+
+			tree.Add('B', 'F');
+			tree.Add('G', 'F');
+			tree.Add('A', 'B');
+			tree.Add('D', 'B');
+			tree.Add('C', 'D');
+			tree.Add('E', 'D');
+			tree.Add('I', 'G');
+			tree.Add('H', 'I');
+
+			tree.Clear('B');
+
+
+			cDlist<tNode<char>*> list;
+
+			tree.PreOrderIterative(&list);
+
+			Assert::IsTrue(list.GetCapacity() == 4);
+			Assert::AreEqual((char)list[0]->data, 'F');
+			Assert::AreEqual((char)list[1]->data, 'G');
+			Assert::AreEqual((char)list[2]->data, 'I');
+			Assert::AreEqual((char)list[3]->data, 'H');
+
+
+		}
 			
 		
 		//STACK------------------------------------------------
@@ -232,4 +262,4 @@ namespace UnitTest
 			Assert::AreEqual((int)lifo.Count(), 3);
 		}
 	};
-	}
+}

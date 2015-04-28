@@ -17,6 +17,10 @@ int main(int argc, char** argv)
 	tree.Add('I', 'G');
 	tree.Add('H', 'I');
 
+	tree.Clear('B');
+
+
 	cDlist<tNode<char>*> list;
-	tree.InOrderIterative(&list);
+
+	tree.PreOrderIterative(&list);
 }
