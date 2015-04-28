@@ -177,62 +177,73 @@ public:
 	void PostOrderIterative(cDlist<tNode<TYPE>*>* list) const
 	{
 		cStack<tNode<TYPE>*> stack;
+		cStack<tNode<TYPE>*> sonStack;
 		tNode<TYPE>* node = rootNode;
 		Node<tNode<TYPE>*>* tmp;
 
 		while (node != NULL)
 		{
-			tmp = node->sons.end;
-
-			if (tmp != NULL && list->end->value != tmp->value)
+			tmp = node->sons.start;
+			stack.Push(node);
+			
+			while (tmp != NULL)
 			{
-				first = false;
-
-				stack.Push(node);
-
-				while (tmp != node->sons.start)
-				{
-					stack.Push(tmp->value);
-					tmp = tmp->prev;
-				}
-
-				node = tmp->value;
+				sonStack.Push(tmp->value);
+				tmp = tmp->next;
 			}
-			else
-			{
-				list->Add(node);
-				stack.Pop(node);
-			}
+			sonStack.Pop(node);
+		}
 
+		stack.Pop(node);
+		while (node != NULL)
+		{
+			list->Add(node);
+			stack.Pop(node);
 		}
 	}
 
-	/*void InOrderIterative(cDlist<tNode<TYPE>*>* list) const
+	void InOrderIterative(cDlist<tNode<TYPE>*>* list) const
 	{
-	cStack<tNode<TYPE*>*> stack;
-	tNode<TYPE>* node = &rootNode;
-	Node<tNode<TYPE>*>* tmp;
-	while (Node != NULL)
-	{
-	tmp = node->sons.end;
-	if (tmp != NULL && list->end != tmp->value)
-	{
-	stack.Push(Node);
-	while (tmp != node->sons.start)
-	{
-	stack.Push(tmp->value);
-	tmp = tmp->prev;
+		cStack<tNode<TYPE>*> stack;
+		cStack<tNode<TYPE>*> stack2;
+		tNode<TYPE>* node = rootNode;
+		Node<tNode<TYPE>*>* tmp;
+		
+		while (node != NULL)
+		{
+			int counter = node->sons.GetCapacity();
+			tmp = node->sons.end;
+			
+			while (tmp != NULL && counter > node->sons.GetCapacity()/2)
+			{
+				stack.Push(tmp->value);
+				
+				tmp = tmp->prev;
+				counter--;
+			}
+			
+			stack.Push(node);
+			stack2.Push(node);
+			
+			while (tmp != NULL && counter > 0)
+			{
+				stack.Push(tmp->value);
+
+				tmp = tmp->prev;
+				counter--;
+			}
+
+			while (stack.PeekLast() == stack2.PeekLast() && stack.PeekLast() != NULL)
+			{
+				stack.Pop(node);
+				stack2.Pop(node);
+				list->Add(node);
+			}
+			
+			stack.Pop(node);
+		}
 	}
-	node = tmp->value;
-	}
-	else
-	{
-	list.add(node);
-	stack.Pop(node);
-	}
-	}
-	}
-	*/
+
 };
 
 

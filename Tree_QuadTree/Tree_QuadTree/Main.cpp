@@ -18,6 +18,5 @@ int main(int argc, char** argv)
 	tree.Add('H', 'I');
 
 	cDlist<tNode<char>*> list;
-	tree.PostOrderIterative(&list);
-
+	tree.InOrderIterative(&list);
 }

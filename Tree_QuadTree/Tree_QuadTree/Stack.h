@@ -74,6 +74,9 @@ public:
 			value = data[--numElements];
 			return true;
 		}
+		else
+			value = NULL;
+		
 		return false;
 	}
 
@@ -88,6 +91,14 @@ public:
 		return ret;
 	}
 
+	const TYPE PeekLast() const
+	{
+		if (numElements >= 1)
+		{
+			return data[numElements - 1];
+		}
+		return NULL;
+	}
 	//other util methods
 	unsigned int GetCapacity() const
 	{

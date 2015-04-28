@@ -183,7 +183,7 @@ namespace UnitTest
 		Assert::AreEqual((char)list[8]->data, 'F');
 		}
 
-		/*TEST_METHOD(TreeInOrderIterative)
+		TEST_METHOD(TreeInOrderIterative)
 		{
 		Tree<char> tree('F');
 
@@ -199,7 +199,7 @@ namespace UnitTest
 		cDlist<tNode<char>*> list;
 		tree.InOrderIterative(&list);
 
-		Assert::AreEqual((int)list.count(), 9);
+		Assert::AreEqual((int)list.GetCapacity(), 9);
 
 		Assert::AreEqual((char)list[0]->data, 'A');
 		Assert::AreEqual((char)list[1]->data, 'B');
@@ -207,13 +207,11 @@ namespace UnitTest
 		Assert::AreEqual((char)list[3]->data, 'D');
 		Assert::AreEqual((char)list[4]->data, 'E');
 		Assert::AreEqual((char)list[5]->data, 'F');
-		Assert::AreEqual((char)list[6]->data, 'G');
-		Assert::AreEqual((char)list[7]->data, 'I');
-		Assert::AreEqual((char)list[8]->data, 'H');
+		
 		}
 
 			
-		*/
+		
 		//STACK------------------------------------------------
 		TEST_METHOD(Stack_test)
 		{
