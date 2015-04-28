@@ -1,7 +1,7 @@
 #ifndef _DLIST_H_
 #define _DLIST_H_
 
-#include <assert.h>
+#include <stdlib.h>
 
 template<class TYPE>
 struct Node
@@ -51,7 +51,7 @@ public:
 	Methods
 	*/
 	//Add
-	TYPE Add(const TYPE& newValue)
+	void Add(const TYPE& newValue)
 	{
 		Node<TYPE>* newNode;
 		newNode = new Node<TYPE>(newValue);
@@ -68,7 +68,7 @@ public:
 		}
 
 		size++;
-		return size;
+		
 	}
 
 	bool Delete(Node<TYPE>* delNode)
@@ -182,9 +182,7 @@ public:
 			tmp = tmp->next;
 		}
 
-		ASSERT(tmp);
-
-		return(tmp->data);
+		return(tmp->value);
 	}
 
 	/*

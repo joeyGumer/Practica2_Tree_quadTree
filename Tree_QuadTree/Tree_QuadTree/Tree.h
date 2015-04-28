@@ -7,61 +7,82 @@
 template <class TYPE>
 class tNode
 {
+public:
 	TYPE data;
-	tNode* father;//el node previ, el pare
-	cDlist<tNode*> sons;//els nodes segueents, ramificacions, els fills
+	tNode* father;
+	cDlist<tNode*> sons;
 
+public:
 	//Constructors
-	tNode() : data(0), father(NULL){};
-	tNode(TYPE& newValue) : data(newValue), father(NULL){};
-	tNode(TYPE& newValue, tNode* dad) : data(newValue), father(dad){};
+	tNode(const TYPE& newValue)
+	{
+		data = newValue;
+		father = NULL;
+	}
+	
+	tNode<TYPE>* FindRecursive(const TYPE& node)
+	{
+		if (node == data)
+			return this;
 
-	//Functions that gets all the nodes (recursive)
-	//fer apunts dels diferents tipus d'ordentacio perque no m'he enterat a casa
-	//amb l'arbre fet a clase  la preOrder dona: F,B,A,D,C,E,G,I,H (per montarla)
-	//fer les mateixers funcions per iteratives (s'ha d'utilitzar una pila)
+		tNode<TYPE>* ret = NULL;
+		Node<tNode<TYPE>*>* tmp = sons.start;
+		while (tmp != NULL)
+		{
+			tNode<TYPE>* son = tmp->value;
+			ret = son->FindRecursive(node);
+
+			if (ret != NULL)
+				break;
+
+			tmp = tmp->next;
+		}
+
+		return ret;
+	}
+	
 	void PreOrderRecursive(cDlist<tNode<TYPE>*>* list)
 	{
 		list->Add(this);
-		Node<tNode*>* item = sons.start;
+		Node<tNode<TYPE>*>* node = sons.start;
 
 
-		while (item != NULL)
+		while (node != NULL)
 		{
-			tNode->PreOrderRecursive(list);
-			item = item->next;
+			node->value->PreOrderRecursive(list);
+			node = node->next;
 		}
 	}
 
 	void PostOrderRecursive(cDlist<tNode<TYPE>*>* list)
 	{
 
-		Node<tNode*>* item = sons.start;
+		Node<tNode<TYPE>*>* node = sons.start;
 
-		while (item != NULL)
+		while (node != NULL)
 		{
-			tNode->PostOrderRecursive(list);
-			item = item->next;
+			node->value->PostOrderRecursive(list);
+			node = node->next;
 		}
 		list->Add(this);
 	}
 
 	void InOrderRecursive(cDlist<tNode<TYPE>*>* list)
 	{
-		Node<tNode*>* item = sons.start;
+		Node<tNode<TYPE>*>* node = sons.start;
 		unsigned int counter = 0;
 
-		while (item != NULL && counter != sons.GetCapacity() / 2)
+		while (node != NULL && counter != sons.GetCapacity() / 2)
 		{
-			tNode->InOrderRecursive(list);
-			item = item->next;
+			node->value->InOrderRecursive(list);
+			node = node->next;
 			counter++;
 		}
 		list->Add(this);
-		while (item != NULL)
+		while (node != NULL)
 		{
-			tNode->InOrderRecursive(list);
-			item = item->next;
+			node->value->InOrderRecursive(list);
+			node = node->next;
 		}
 	}
 };
@@ -69,33 +90,27 @@ class tNode
 template <class TYPE>
 class Tree
 {
-	/*
-	//Atributes
-	*/
 public:
-	tNode* rootNode;
-
-	/*
-	//Methods
-	*/
-
-	//Constructor and Destructor
+	tNode<TYPE>* rootNode;
+	
+public:
 	Tree(const TYPE& value)
 	{
-		rootNode->data = value;
+		tNode<TYPE>* root = new tNode<TYPE>(value);
+		rootNode = root;
 	}
 
 	~Tree()
 	{
 
 	}
-
+	
 	//Add
 	tNode<TYPE>* Add(const TYPE& newData)
 	{
-		tNode<TYPE>* newNode = new tNode(newData);
+		tNode<TYPE>* newNode = new tNode<TYPE>(newData);
 
-		rootNode->sons->Add(newNode);
+		rootNode->sons.Add(newNode);
 		newNode->father = rootNode;
 
 		return newNode;
@@ -103,36 +118,36 @@ public:
 
 	tNode<TYPE>* Add(const TYPE& newData, const TYPE& dad)
 	{
-		tNode<TYPE>* newNode = new tNode(newData);
-		tNode<TYPE>* parent = GetNode(dad);
+		tNode<TYPE>* parent = rootNode->FindRecursive(dad);
+		tNode<TYPE>* newNode = new tNode<TYPE>(newData);
 
-		parent->sons->Add(newNode);
+		parent->sons.Add(newNode);
 		newNode->father = parent;
 
 		return newNode;
 	}
-
+	
 	//Function that returns all the nodes (recursive)
 	void PreOrderRecursive(cDlist<tNode<TYPE>*>* list) const
 	{
-		root.PreOrderRecursive(list);
+		rootNode->PreOrderRecursive(list);
 	}
 
 	void PostOrderRecursive(cDlist<tNode<TYPE>*>* list) const
 	{
-		root.PostOrderRecursive(list);
+		rootNode->PostOrderRecursive(list);
 	}
 
 	void InOrderRecursive(cDlist<tNode<TYPE>*>* list) const
 	{
-		root.InOrderRecursive(list) const;
+		rootNode->InOrderRecursive(list);
 	}
-
+	
 	//Function that returns all the nodes (iterative)
 	void PreOrderIterative(cDlist<tNode<TYPE>*>* list) const
 	{
-		cStack<tNode<TYPE*>*> stack;
-		tNode<TYPE>* node = &rootNode;
+		cStack<tNode<TYPE>*> stack;
+		tNode<TYPE>* node = rootNode;
 		Node<tNode<TYPE>*>* tmp;
 
 		while (node != NULL)
@@ -151,27 +166,29 @@ public:
 			{
 				node = tmp->value;
 			}
-			else()
+			else
 			{
 				node = NULL;
-				pop.stack(node);
+				stack.Pop(node);
 			}
 		}
 	}
-
+	
 	void PostOrderIterative(cDlist<tNode<TYPE>*>* list) const
 	{
-		cStack<tNode<TYPE*>*> stack;
-		tNode<TYPE>* node = &rootNode;
+		cStack<tNode<TYPE>*> stack;
+		tNode<TYPE>* node = rootNode;
 		Node<tNode<TYPE>*>* tmp;
 
-		while (Node != NULL)
+		while (node != NULL)
 		{
 			tmp = node->sons.end;
 
-			if (tmp != NULL && list->end != tmp->value)
+			if (tmp != NULL && list->end->value != tmp->value)
 			{
-				stack.Push(Node);
+				first = false;
+
+				stack.Push(node);
 
 				while (tmp != node->sons.start)
 				{
@@ -214,30 +231,8 @@ public:
 	stack.Pop(node);
 	}
 	}
-	}*/
-
-	tNode<TYPE>* GetNode(const TYPE& nodeData) const
-	{
-		cDlist<tNode<TYPE>*>* list;
-
-		PreOrderIterative(list);
-
-		Node<tNode<TYPE>*>* node = list->start;
-		tNode<TYPE>* tmp;
-
-		while (node != NULL)
-		{
-			tmp = node->value
-
-				if (tmp->data = nodeData)
-					return tmp;
-
-			node = node->next;
-		}
-		return NULL;
 	}
-
-
+	*/
 };
 
 
